@@ -11,6 +11,8 @@ class Role(db.Model):
     name = db.Column(db.String(64), unique=True)
     users = db.relationship('User', backref='role', lazy='dynamic')
 
+    default = db.Column(db.Boolean, default = False, index = True)
+    permissions = db.Column(db.Integer)
     def __repr__(self):
         return '<Role %r>' % self.name
 
@@ -62,3 +64,14 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
 	return User.query.get(int(user_id))
+
+class Request(db.Model):
+    request_id = db.Column(db.Integer, primary_key = True, index = True)
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    status = db.Column(db.Integer)
+    
+class Permission:
+    ATTEMPT = 0x01
+    CREATE = 0x02
+    SHUTDOWN = 0x04
