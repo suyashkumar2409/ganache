@@ -14,9 +14,9 @@ class Role(db.Model):
     default = db.Column(db.Boolean, default = False, index = True)
     permissions = db.Column(db.Integer, index = True)
 
-    requests = db.relationship('Request', backref='requests', lazy = 'dynamic')
+    requests = db.relationship('Request', backref='roleRequestList', lazy = 'dynamic')
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return '<Role %r %r>' % self.name, self.permissions
 
 
 class User(UserMixin, db.Model):
@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default = False)
 
-    requests = db.relationship('Request', backref='requests', lazy = 'dynamic')
+    requests = db.relationship('Request', backref='userRgaequestList', lazy = 'dynamic')
 
 
     def generate_confirmation_token(self, expiration = 60*60*48):
