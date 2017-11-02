@@ -6,14 +6,15 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'GanacheApp for Quiz making'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'suyashkumar2409@gmail.com'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'anarraystartswith0'
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'suyashkumar2409@gmail.com'
+    MAIL_PASSWORD =  'anarraystartswith0'
     APP_MAIL_SUBJECT_PREFIX = '[' + app_name + ']'
-    APP_MAIL_SENDER = app_name+' Admin' +app_name+'@gmail.com'
-    APP_ADMIN = os.environ.get(app_name+'_ADMIN') or 'Suyash Kumar'
+    APP_MAIL_SENDER = 'suyashkumar2409@gmail.com'
+    APP_ADMIN = 'Suyash Kumar'
 
     @staticmethod
     def init_app(app):

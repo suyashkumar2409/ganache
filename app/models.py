@@ -33,13 +33,16 @@ class User(UserMixin, db.Model):
     	try:
     		data = s.loads(token)
     	except:
-    		return False
+            print('loads didnt work')
+            return False
     	if data.get('confirm') != self.id:
-    		return False
+            print(data.get('confirm'))
+            print(self.id)
+            return False
 
- 	   	self.confirmed = true
- 	   	db.session.add(self)
- 	   	return True
+        self.confirmed = True
+        db.session.add(self)
+        return True
 
  	   	
     @property
