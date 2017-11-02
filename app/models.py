@@ -12,7 +12,9 @@ class Role(db.Model):
     users = db.relationship('User', backref='role', lazy='dynamic')
 
     default = db.Column(db.Boolean, default = False, index = True)
-    permissions = db.Column(db.Integer)
+    permissions = db.Column(db.Integer, index = True)
+
+    requests = db.relationship('Request', backref='requests', lazy = 'dynamic')
     def __repr__(self):
         return '<Role %r>' % self.name
 
@@ -25,6 +27,9 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default = False)
+
+    requests = db.relationship('Request', backref='requests', lazy = 'dynamic')
+
 
     def generate_confirmation_token(self, expiration = 60*60*48):
     	s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -66,9 +71,11 @@ def load_user(user_id):
 	return User.query.get(int(user_id))
 
 class Request(db.Model):
+    __tablename__ = 'requests'
+
     request_id = db.Column(db.Integer, primary_key = True, index = True)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), index = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index = True)
     status = db.Column(db.Integer)
     
 class Permission:
