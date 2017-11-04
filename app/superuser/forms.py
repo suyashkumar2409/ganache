@@ -6,4 +6,4 @@ from ..models import User
 
 class UpgradeForm(Form):
 	upgradeToCreater = SubmitField('Upgrade to Quiz Creator')
-	upgradeToSuperUser = SubmitField('Upgrade to Super User')
+	upgradeToSuperUser = SubmitField('Upgrade to Super User') 

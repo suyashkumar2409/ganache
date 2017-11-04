@@ -16,7 +16,7 @@ class Role(db.Model):
 
     requests = db.relationship('Request', backref='roleRequestList', lazy = 'dynamic')
     def __repr__(self):
-        return '<Role %r %r>' % self.name, self.permissions
+        return '<Role %r>' % self.name
 
 
 class User(UserMixin, db.Model):
@@ -28,12 +28,16 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default = False)
 
-    requests = db.relationship('Request', backref='userRgaequestList', lazy = 'dynamic')
+    requests = db.relationship('Request', backref='userRequestList', lazy = 'dynamic')
 
 
     def generate_confirmation_token(self, expiration = 60*60*48):
     	s = Serializer(current_app.config['SECRET_KEY'], expiration)
     	return s.dumps({'confirm':self.id})
+
+    def generate_token_role(self, expiration = 60*60*48, role = 2, requestId = -1):
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'confirm':self.id, 'role':role, 'requestId':requestId})
 
     def confirm(self, token):
     	s = Serializer(current_app.config['SECRET_KEY'])
@@ -77,7 +81,7 @@ class Request(db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), index = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), index = True)
     status = db.Column(db.Integer)
-    
+    # status - 0, sent, 1, accepted, 2 declined
 class Permission:
     ATTEMPT = 0x01
     CREATE = 0x02
