@@ -6,6 +6,7 @@ from ..models import User, Request, Role
 from ..email import send_email
 from app import db
 from .forms import UpgradeForm
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 
 @superuser.route('/upgrade/', methods=['GET', 'POST'])
@@ -112,19 +113,29 @@ def confirm(token):
 	s = Serializer(current_app.config['SECRET_KEY'])
 	try:
 		data = s.loads(token)
+		print (data)
 
 		userId = data.get('confirm')
 		rolePermission = data.get('role')
 		requestId = data.get('requestId')
-
-
-		user = User.query.filter_by(id = userId)
-		role = Role.query.filter_by(permissions = rolePermission)
-		request = Request.query.filter_by(id = requestId)
+		
+		user = User.query.filter_by(id = userId).first()
+		# print(user)
+		role = Role.query.filter_by(permissions = rolePermission).first()
+		# print(role)
+		
+		request = Request.query.filter_by(request_id = requestId).first()
+		# print (request)
+		# return errInLoading()
         
+
 		if user is not None and role is not None and request is not None:
-			request.status = 2
+			user.role_id = role.id
+			db.session.add(user)
+			request.status = 1
 			db.session.add(request)
+
+			print user.role_id
 
 			flash('This user has been approved')
 			return redirect(url_for('main.index'))
@@ -134,29 +145,36 @@ def confirm(token):
 		print('loads didnt work')
 		return errInLoading()
 
+
 @superuser.route('/decline/<token>')
 @login_required
 def decline(token):
 	s = Serializer(current_app.config['SECRET_KEY'])
 	try:
 		data = s.loads(token)
+		print (data)
 
 		userId = data.get('confirm')
 		rolePermission = data.get('role')
 		requestId = data.get('requestId')
-
-
-		user = User.query.filter_by(id = userId)
-		role = Role.query.filter_by(permissions = rolePermission)
-		request = Request.query.filter_by(id = requestId)
+		
+		user = User.query.filter_by(id = userId).first()
+		# print(user)
+		role = Role.query.filter_by(permissions = rolePermission).first()
+		# print(role)
+		
+		request = Request.query.filter_by(request_id = requestId).first()
+		# print (request)
+		# return errInLoading()
         
+
 		if user is not None and role is not None and request is not None:
-			user.role_id = role.id
-			db.session.add(user)
-			request.status = 1
+			request.status = 2
 			db.session.add(request)
 
-			flash('This user has been approved')
+			print user.role_id
+
+			flash('This user has been declined')
 			return redirect(url_for('main.index'))
 		else:
 			return errInLoading()
