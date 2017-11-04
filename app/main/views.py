@@ -4,24 +4,12 @@ from ..models import User
 from ..email import send_email
 from . import main
 from .forms import NameForm
+from flask_login import current_user
 
-
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def index():
-    form = NameForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.name.data).first()
-        if user is None:
-            user = User(username=form.name.data)
-            db.session.add(user)
-            session['known'] = False
-            if current_app.config['APP_ADMIN']:
-                send_email(current_app.config['APP_ADMIN'], 'New User',
-                           'mail/new_user', user=user)
-        else:
-            session['known'] = True
-        session['name'] = form.name.data
-        return redirect(url_for('.index'))
-    return render_template('index.html',
-                           form=form, name=session.get('name'),
-                           known=session.get('known', False))
+    if current_user.is_authenticated:
+        role_id = User.query.filter_by(id=current_user.get_id()).first().role_id
+    else:
+        role_id = -1
+    return render_template('index.html', role_id = role_id, user = current_user)
