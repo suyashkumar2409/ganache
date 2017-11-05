@@ -20,7 +20,7 @@ class Role(db.Model):
 
 class Quiz(db.Model):
     __tablename__ = 'quizzes'
-    id = db.Column(db.Integer, primary_key = true)
+    id = db.Column(db.Integer, primary_key = True)
     quizName = db.Column(db.String(128), default = '')
     creatorId = db.Column(db.Integer, db.ForeignKey('users.id'), default = 1)
     questionsIdList = db.Column(db.PickleType)

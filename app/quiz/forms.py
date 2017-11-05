@@ -4,5 +4,5 @@ from wtforms.validators import Required, Email, Length, Regexp, EqualTo
 from wtforms import ValidationError
 from ..models import User
 
-class QuizForm(Form):
-	
+# class QuizForm(Form):
+# 	

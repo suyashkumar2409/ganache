@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block title %}Ganache - Make Quiz{% endblock %}
+
+
+{% block page_content %}
+<h1>Excel file upload (csv, tsv, csvz, tsvz only)</h1>
+    
+      <form action = "{{url_for('quiz.createQuiz')}}" method = "POST" 
+         enctype = "multipart/form-data">
+         <input type = "file" name = "file" />
+         <input type = "submit"/>
+      </form>
+
+{% endblock %}

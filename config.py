@@ -15,7 +15,8 @@ class Config:
     APP_MAIL_SUBJECT_PREFIX = '[' + app_name + ']'
     APP_MAIL_SENDER = 'suyashkumar2409@gmail.com'
     APP_ADMIN = 'Suyash Kumar'
-
+    UPLOAD_FOLDER = '/temp/'
+    MAX_CONTENT_PATH = 4096*1000
     @staticmethod
     def init_app(app):
         pass

@@ -1,15 +1,23 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, jsonify
 from . import quiz
 from flask_login import login_required, login_user, logout_user, current_user
 from ..models import User
-from .forms import LoginForm, RegistrationForm
+# from .forms import LoginForm, RegistrationForm
 from ..email import send_email
 from app import db
 
 @quiz.route('/create', methods = ['GET', 'POST'])
 @login_required
 def createQuiz():
-	if current_user.role_id == 2 or current_user.role_id == 4:
+	if current_user.role_id == 2 or current_user.role_id == 3:
+		if request.method == 'POST':
+			f = request.files['file']
+			print (f)
+
+			return redirect(url_for('main.index'))
+
+		else:
+			return render_template('quiz/upload.html')
 		# then only allow these actions to occur
 		# get questions from excel file
 		# create unique form with these questions
