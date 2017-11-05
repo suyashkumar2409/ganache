@@ -5,14 +5,26 @@ from ..models import User
 # from .forms import LoginForm, RegistrationForm
 from ..email import send_email
 from app import db
+import csv
+import json
 
 @quiz.route('/create', methods = ['GET', 'POST'])
 @login_required
 def createQuiz():
 	if current_user.role_id == 2 or current_user.role_id == 3:
 		if request.method == 'POST':
-			f = request.files['file']
-			print (f)
+			csvfile = request.files['file'].read()
+			fieldnames = ["SerialNo","QuestionString","Opt1","Opt2", "Opt3", "Opt4","CorrectOpt"]
+			reader = csv.DictReader( csvfile, fieldnames)
+			
+			jsonData = []
+
+			for row in reader:
+				print row
+				jsonData.append(row)
+
+			# print jsonData
+
 
 			return redirect(url_for('main.index'))
 
