@@ -37,5 +37,7 @@ def create_app(config_name):
     from .superuser import superuser as superuser_blueprint
     app.register_blueprint(superuser_blueprint, url_prefix='/superuser')
 
+    from .quiz import quiz as quiz_blueprint
+    app.register_blueprint(quiz_blueprint, url_prefix = '/quiz')
     return app
 

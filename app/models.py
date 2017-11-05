@@ -18,6 +18,35 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role %r>' % self.name
 
+class Quiz(db.Model):
+    __tablename__ = 'quizzes'
+    id = db.Column(db.Integer, primary_key = true)
+    quizName = db.Column(db.String(128), default = '')
+    creatorId = db.Column(db.Integer, db.ForeignKey('users.id'), default = 1)
+    questionsIdList = db.Column(db.PickleType)
+
+    questions = db.relationship('Question', backref='questionList', lazy = 'dynamic')
+    # array of questions id
+    # fk to creator -- done
+    # unique link -- done
+    def generateToken(self):
+        return id + '-' + quizName
+
+    def getShareableLink(self):
+        return url_for('quiz.give', token = self.generateToken(), _external = True)
+
+    def __repr__(self):
+        return '<Role %r>' % self.quizName
+
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'), default = 1)
+    questionName = db.Column(db.String(512))
+    opt1 = db.Column(db.String(128))
+    opt2 = db.Column(db.String(128))
+    opt3 = db.Column(db.String(128))
+    opt4 = db.Column(db.String(128))
+    correctAns = db.Column(db.String(128))
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -29,6 +58,7 @@ class User(UserMixin, db.Model):
     confirmed = db.Column(db.Boolean, default = False)
 
     requests = db.relationship('Request', backref='userRequestList', lazy = 'dynamic')
+    quizList = db.relationship('Quiz', backref='quizList', lazy = 'dynamic')
 
 
     def generate_confirmation_token(self, expiration = 60*60*48):
