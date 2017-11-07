@@ -18,6 +18,15 @@ class Role(db.Model):
     def __repr__(self):
         return '<Role %r>' % self.name
 
+class Score(db.Model):
+    __tablename__ = 'scores'
+    id = db.Column(db.Integer, primary_key = True)
+    giverId = db.Column(db.Integer, db.ForeignKey('users.id'), default = 1, index = True)
+    quizId = db.Column(db.Integer, db.ForeignKey('quizzes.id'), default = 1, index = True)
+    score = db.Column(db.Integer)
+    answers  = db.Column(db.PickleType)
+
+
 class Quiz(db.Model):
     __tablename__ = 'quizzes'
     id = db.Column(db.Integer, primary_key = True)
@@ -59,6 +68,7 @@ class User(UserMixin, db.Model):
 
     requests = db.relationship('Request', backref='userRequestList', lazy = 'dynamic')
     quizList = db.relationship('Quiz', backref='quizList', lazy = 'dynamic')
+    scores = db.relationship('Score', backref='scoresList', lazy = 'dynamic')
 
 
     def generate_confirmation_token(self, expiration = 60*60*48):

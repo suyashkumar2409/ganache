@@ -14,12 +14,12 @@
 
 <form action="{{url_for('quiz.view', token =token)}}" method='POST'>
     <ol>
-        {% for q in questions %}
-            <li> {{q.question }} </li>
-            <input type='radio' value='1' name='{{i}}'>{{q['opt1']}} </input>
-            <input type='radio' value='2' name='{{i}}'>{{q['opt2']}} </input>
-            <input type='radio' value='3' name='{{i}}'>{{q['opt3']}} </input>
-            <input type='radio' value='4' name='{{i}}'>{{q['opt4']}} </input>
+        {% for i in range(questionsLen) %}
+            <li> {{questions[i].question }} </li>
+            <input type='radio' value='{{questions[i].opt1}}' name='{{i}}'>{{questions[i]['opt1']}} </input>
+            <input type='radio' value='{{questions[i].opt2}}' name='{{i}}'>{{questions[i]['opt2']}} </input>
+            <input type='radio' value='{{questions[i].opt3}}' name='{{i}}'>{{questions[i]['opt3']}} </input>
+            <input type='radio' value='{{questions[i].opt4}}' name='{{i}}'>{{questions[i]['opt4']}} </input>
         {% endfor %}
     </ol>
     <input type="submit" value="submit" />

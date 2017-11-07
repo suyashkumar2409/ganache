@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} {{ quizName }} {% endblock %}
+
+{% block page_content %}
+
+{% if isCreator %}
+
+
+{% endif %}
+
+<h1> {{ quizName }}</h1>
+
+<h4>You have submitted the quiz!</h4>
+<h5> Your score is {{numericalScore}}/{{totalScore}}</h5>
+
+<form>
+    <ol>
+        {% for i in range(lenQuestions) %}
+            <li> {{questions[i].question }} </li>
+            <input type='radio' value='{{questions[i].opt1}}' name='{{i}}'>{{questions[i]['opt1']}} </input>
+            {% if questions[i]['opt1'] == correctAnswers[i] %}
+                    &#10004;
+            {% endif %}
+
+            {% if questions[i]['opt1'] == answers[i] %}
+                {% if answers[i] != correctAnswers[i] %}
+                    &#10007;
+                {% endif%}
+            {% endif %}
+
+            <input type='radio' value='{{questions[i].opt2}}' name='{{i}}'>{{questions[i]['opt2']}} </input>
+            {% if questions[i]['opt2'] == correctAnswers[i] %}
+                    &#10004;
+            {% endif %}
+
+            {% if questions[i]['opt2'] == answers[i] %}
+                {% if answers[i] != correctAnswers[i] %}
+                    &#10007;
+                {% endif%}
+            {% endif %}
+
+            <input type='radio' value='{{questions[i].opt3}}' name='{{i}}'>{{questions[i]['opt3']}} </input>
+            {% if questions[i]['opt3'] == correctAnswers[i] %}
+                    &#10004;
+            {% endif %}
+
+            {% if questions[i]['opt3'] == answers[i] %}
+                {% if answers[i] != correctAnswers[i] %}
+                    &#10007;
+                {% endif%}
+            {% endif %}
+
+            <input type='radio' value='{{questions[i].opt4}}' name='{{i}}'>{{questions[i]['opt4']}} </input>
+            {% if questions[i]['opt4'] == correctAnswers[i] %}
+                    &#10004;
+            {% endif %}
+
+            {% if questions[i]['opt4'] == answers[i] %}
+                {% if answers[i] != correctAnswers[i] %}
+                    &#10007;
+                {% endif%}
+            {% endif %}
+        {% endfor %}
+    </ol>
+</form>
+
+{% endblock %}
