@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Ganache{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Hello {{ user.username }}, you are currently a {{role}}
+    </h1>
+    
+</div>
+
+<h5>Here is a list of all the quizzes you have created</h5>
+    <ul>
+{% for i in range(listLen) %}
+
+    <li>
+        <a href = "{{url_for('quiz.quizz') }}view/{{quizTokenList[i]}}" >
+            <p>
+                {{ quizNamesList[i] }}  
+            </p>
+        </a>
+    </li>
+
+{% endfor %}
+    </ul>
+
+{% endblock %}
+

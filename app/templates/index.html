@@ -5,19 +5,11 @@
 
 {% block page_content %}
 <div class="page-header">
-	{% if user.is_authenticated %}
-    <h1>Hello {{ user.username }}, you are currently a 
-        {% if role_id == 1 %}
-        Quiz taker
-        {% elif role_id==2 %}
-        Quiz creator
-        {% elif role_id==3 %}
-        Super User
-        {% endif %}
-    </h1>
-    {% else %}
     <h1>Welcome to Ganache!</h1>
     
-	{% endif %}
 </div>
+
+<hr>
+
+
 {% endblock %}

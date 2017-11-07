@@ -7,7 +7,7 @@
 
 {% if isCreator %}
 
-
+The shareable link for this quiz is : <a href="{{url_for('quiz.quizz', _external=True)}}view/{{ token }}">{{url_for('quiz.quizz', _external=True)}}view/{{ token }}</a>
 {% endif %}
 
 <h1> {{ quizName }}</h1>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Ganache{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+	{% if user.is_authenticated %}
+    <h1>Hello {{ user.username }}, you are currently a Quiz taker
+       
+    </h1>
+</div>
+
+<h5>Here is a list of all the quizzes you have taken</h5>
+    <ul>
+{% for i in range(listLen) %}
+
+    <li>
+        <a href = "{{url_for('quiz.quizz') }}view/{{tokensList[i]}}" >
+            <p>
+                {{ quizNamesList[i] }}       Score: {{scoresList[i]}} / {{totalScoresList[i]}}
+            </p>
+        </a>
+    </li>
+
+{% endfor %}
+    </ul>
+
+{% endblock %}
+

@@ -11,6 +11,10 @@ import json
 
 QUESTIONSCORE = 10
 
+@quiz.route('/')
+def quizz():
+	return redirect(url_for('main.index'))
+
 @quiz.route('/view/<token>', methods = ['GET', 'POST'])
 @login_required
 def view(token):
