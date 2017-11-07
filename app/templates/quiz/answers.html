@@ -18,7 +18,8 @@ The shareable link for this quiz is : <a href="{{url_for('quiz.quizz', _external
 <form>
     <ol>
         {% for i in range(lenQuestions) %}
-            <li> {{questions[i].question }} </li>
+        <div class="jumbotron">
+            <li > {{questions[i].question }} </li>
             <input type='radio' value='{{questions[i].opt1}}' name='{{i}}'>{{questions[i]['opt1']}} </input>
             {% if questions[i]['opt1'] == correctAnswers[i] %}
                     &#10004;
@@ -62,7 +63,9 @@ The shareable link for this quiz is : <a href="{{url_for('quiz.quizz', _external
                     &#10007;
                 {% endif%}
             {% endif %}
+</div>
         {% endfor %}
+        
     </ol>
 </form>
 

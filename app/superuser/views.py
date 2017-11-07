@@ -18,6 +18,11 @@ def upgrade():
 		print "lol"
 		# send email and add request row
 		if form.upgradeToCreater.data:
+			user = User.query.filter_by(id=current_user.get_id()).first()
+			if user.role_id == 2 or user.role_id == 3:
+				flash('You can already create quizzes!')
+				return redirect(url_for('main.index'))
+
 			requestUpgrade = Request()
 			requestUpgrade.role_id = Role.query.filter_by(permissions = 2).first().id
 			requestUpgrade.user_id = current_user.get_id()
@@ -35,6 +40,11 @@ def upgrade():
 			print('creator')
 
 		elif form.upgradeToSuperUser.data:
+			user = User.query.filter_by(id=current_user.get_id()).first()
+			if user.role_id == 3:
+				flash('You are already a superuser!')
+				return redirect(url_for('main.index'))
+
 			requestUpgrade = Request()
 			requestUpgrade.role_id = Role.query.filter_by(permissions = 4).first().id
 			requestUpgrade.user_id = current_user.get_id()
@@ -117,12 +127,13 @@ def confirm(token):
 
 		userId = data.get('confirm')
 		rolePermission = data.get('role')
+		print rolePermission
 		requestId = data.get('requestId')
 		
 		user = User.query.filter_by(id = userId).first()
 		# print(user)
 		role = Role.query.filter_by(permissions = rolePermission).first()
-		# print(role)
+		print(role)
 		
 		request = Request.query.filter_by(request_id = requestId).first()
 		# print (request)
