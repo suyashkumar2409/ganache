@@ -30,7 +30,7 @@ class Quiz(db.Model):
     # fk to creator -- done
     # unique link -- done
     def generateToken(self):
-        return id + '-' + quizName
+        return str(self.id) + '-' + str(self.quizName)
 
     def getShareableLink(self):
         return url_for('quiz.give', token = self.generateToken(), _external = True)

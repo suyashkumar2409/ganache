@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} {{ quizName }} {% endblock %}
+
+{% block page_content %}
+
+{% if isCreator %}
+<h3>The shareable link is : {{url_for('quiz.view', token, _external = True)}} </h3>
+
+{% endif %}
+
+<h1> {{ quizName }}</h1>
+
+<form action="{{url_for('quiz.view', token =token)}}" method='POST'>
+    <ol>
+        {% for q in questions %}
+            <li> {{q.question }} </li>
+            <input type='radio' value='1' name='{{i}}'>{{q['opt1']}} </input>
+            <input type='radio' value='2' name='{{i}}'>{{q['opt2']}} </input>
+            <input type='radio' value='3' name='{{i}}'>{{q['opt3']}} </input>
+            <input type='radio' value='4' name='{{i}}'>{{q['opt4']}} </input>
+        {% endfor %}
+    </ol>
+    <input type="submit" value="submit" />
+</form>
+
+{% endblock %}
