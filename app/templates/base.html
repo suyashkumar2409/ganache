@@ -31,8 +31,10 @@
             {% else %}
                 <li><a href="{{ url_for('auth.login') }}">Sign In</a></li>
             {% endif %}
-                <li><a href="{{ url_for('superuser.upgrade')}}">?</a></li>
+                
                 <li><a href="{{ url_for('quiz.createQuiz')}}">Create Quiz</a></li>
+
+                <li><a id="hyde" href="{{ url_for('superuser.upgrade')}}">?</a></li>
             </ul>
         </div>
 
@@ -52,9 +54,8 @@
 
     {% block page_content %}{% endblock %}
 </div>
+
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='base.css') }} ">
 {% endblock %}
 
-{% block scripts %}
-{{ super() }}
-{{ moment.include_moment() }}
-{% endblock %}
