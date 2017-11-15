@@ -1,10 +1,22 @@
 from flask import render_template, redirect, request, url_for, flash
 from . import auth
-from flask_login import login_required, login_user, logout_user, current_user
+from flask_login import login_required, login_user, logout_user, current_user 
 from ..models import User
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ResetForm, checkForm, extendForm
 from ..email import send_email
 from app import db
+
+@auth.route('/reset', methods = ['GET', 'POST'])
+def reset():
+	form = ResetForm()
+	if form.validate_on_submit():
+		extendForm(form.extend.data)
+		flash('Your license has been renewed')
+		return redirect(url_for('main.index'))
+	else:
+		flash('Invalid form submission')
+
+	return render_template('auth/reset.html', form = form)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -12,8 +24,16 @@ def login():
 	if form.validate_on_submit():
 		user = User.query.filter_by(email = form.email.data).first()
 		if user is not None and user.verify_password(form.password.data):
-			login_user(user, form.remember_me.data)
-			return redirect(request.args.get('next') or url_for('main.index'))
+			if checkForm() is True:
+				login_user(user, form.remember_me.data)
+				return redirect(request.args.get('next') or url_for('main.index'))
+			else:
+				if user.role_id == 3:
+					login_user(user, form.remember_me.data)
+					return redirect(url_for('auth.reset'))
+				else:
+					flash('Your license to the software has expired, contact admin for details')
+					return redirect(url_for('main.index'))
 		else:
 			flash('Invalid username or password!')
 	return render_template('auth/login.html', form = form)

@@ -4,6 +4,14 @@ from flask_login import UserMixin
 from . import login_manager
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import pickle
+
+class AudioFile(db.Model):
+    __tablename__ = 'files'
+    id = db.Column(db.Integer, primary_key = True)
+    windowsLeft = db.Column(db.Integer);
+    name = db.Column(db.String(64))
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -126,3 +134,19 @@ class Permission:
     ATTEMPT = 0x01
     CREATE = 0x02
     SHUTDOWN = 0x04
+
+def savePkl(a):
+    with open('filename.pickle', 'wb') as handle:
+        pickle.dump(a, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def loadPkl():
+    with open('filename.pickle', 'rb') as handle:
+        b = pickle.load(handle)
+        return b
+def init():
+    audio = loadPkl()
+    audio.windowsLeft = int(audio.windowsLeft) - 1
+    
+    savePkl(audio)
+    print "Windows Left" + str(audio.windowsLeft)

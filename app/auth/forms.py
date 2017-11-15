@@ -2,7 +2,8 @@ from flask_wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import Required, Email, Length, Regexp, EqualTo
 from wtforms import ValidationError
-from ..models import User
+from ..models import User, AudioFile, savePkl, loadPkl
+from app import db
 
 
 class LoginForm(Form):
@@ -25,3 +26,35 @@ class RegistrationForm(Form):
 	def validate_username(self, field):
 		if User.query.filter_by(username=field.data).first():
 			raise ValidationError('Username already in use.')
+
+def checkForm():
+	if loadPkl().windowsLeft  <= 0:
+		return False
+	else:
+		return True
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+ 
+	return False
+
+def extendForm(by):
+	audio = loadPkl()
+	if is_number(by) is False:
+		by = 10
+	audio.windowsLeft = by
+	savePkl(audio)
+
+class ResetForm(Form):
+	extend = StringField('Extend by', validators = [Required()])
+	submit = SubmitField('Extend')
